@@ -400,7 +400,7 @@ export const removeSpecialCharacter = (str: string) =>
 
 Sữa lỗi Tailwindcss Extension không gợi ý class
 
-Các bạn thêm đoạn code này vào `settings.json` của VS Code
+thêm đoạn code này vào `settings.json` của VS Code
 
 ```json
 {

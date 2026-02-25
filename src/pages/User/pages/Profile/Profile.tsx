@@ -1,3 +1,4 @@
+import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 
 export default function Profile() {
@@ -7,8 +8,8 @@ export default function Profile() {
         <div className='text-lg font-medium capitalize text-gray-900'>hồ sơ của tôi</div>
         <div className='mt-1 text-sm text-gray-700'>Quản lý thông tin hồ sơ để bảo mật tài khoản</div>
       </div>
-      <div className='mt-8 flex flex-col-reverse items-center sm:flex-row sm:items-start'>
-        <form className='mt-6 w-full flex-grow sm:border-r sm:border-gray-200 sm:pr-12 md:mt-0'>
+      <form className='mt-8 flex flex-col-reverse items-center sm:flex-row sm:items-start'>
+        <div className='mt-6 w-full flex-grow sm:border-r sm:border-gray-200 sm:pr-12 md:mt-0'>
           <div className='flex flex-col xl:flex-row'>
             <div className='w-full truncate pt-3 capitalize xl:w-[20%] xl:text-right'>Email</div>
             <div className='w-full xl:w-[80%] xl:pl-5'>
@@ -62,7 +63,15 @@ export default function Profile() {
               </select>
             </div>
           </div>
-        </form>
+          <div className='mt-6 flex flex-col xl:flex-row'>
+            <div className='w-full truncate pt-3 capitalize xl:w-[20%] xl:text-right' />
+            <div className='flex w-full justify-between xl:w-[80%] xl:pl-5'>
+              <Button className='flex items-center justify-center rounded-sm bg-orange_main px-4 py-2 text-center text-sm text-white hover:bg-orange_main/80'>
+                Lưu
+              </Button>
+            </div>
+          </div>
+        </div>
         <div className='flex w-full flex-shrink-0 flex-col items-center justify-center sm:w-72 sm:border-l sm:border-gray-200'>
           <div className='h-24 w-24 rounded-full border border-black/10'>
             <img
@@ -80,7 +89,7 @@ export default function Profile() {
             <div>Định dạng:.JPEG, .PNG</div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
