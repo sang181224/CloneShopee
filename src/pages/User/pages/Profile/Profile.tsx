@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useContext, useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import userApi from 'src/api/user.api'
 import Button from 'src/components/Button'
@@ -8,37 +8,53 @@ import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
 import { userSchema, type UserSchema } from 'src/utils/rules'
 import DateSelect from '../../components/DateSelect'
+import { toast } from 'react-toastify'
+import { AppContext } from 'src/Contexts/app.context'
+import userDefaultSVG from 'src/assets/images/userdefault.svg'
+import { setProfileToLS } from 'src/utils/auth'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'avatar' | 'phone' | 'day_of_birth'>
 const profileSchema = userSchema.pick(['name', 'address', 'avatar', 'phone', 'day_of_birth'])
 export default function Profile() {
+  const { setProfile } = useContext(AppContext)
   const {
     register,
     control,
     formState: { errors },
     handleSubmit,
     setValue
-    // watch,
+    // watch
     // setError
   } = useForm<FormData>({
     resolver: yupResolver(profileSchema)
   })
-  const { data: profileData } = useQuery({
+  const { data: profileData, refetch } = useQuery({
     queryKey: ['profileData'],
     queryFn: () => userApi.getProfile()
+  })
+  const updateProfileMutation = useMutation({
+    mutationFn: userApi.updateProfile
   })
   const profile = profileData?.data.data
   useEffect(() => {
     if (profile) {
       setValue('name', profile.name as string)
       setValue('address', profile.address as string)
-      setValue('avatar', profile.avatar as string)
+      setValue('avatar', (profile.avatar as string) || '')
       setValue('phone', profile.phone as string)
       setValue('day_of_birth', profile.date_of_birth ? new Date(profile.date_of_birth) : new Date(1990, 0, 1))
     }
   }, [profile, setValue])
-  const onSubmit = handleSubmit((data) => {})
-  console.log(profile)
+  const onSubmit = handleSubmit(async (data) => {
+    console.log(data)
+    const res = await updateProfileMutation.mutateAsync({ ...data, date_of_birth: data.day_of_birth?.toISOString() })
+    refetch()
+    setProfile(res.data.data)
+    setProfileToLS(res.data.data)
+    toast.success(res.data.message)
+  })
+
+  // console.log(profile)
   return (
     <div className='rounded-sm bg-white px-7 pb-20 shadow'>
       <div className='border-b border-b-gray-200 py-4'>
@@ -77,7 +93,7 @@ export default function Profile() {
                     classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border-gray-500
                  focus:shadow-sm'
                     placeholder='Số điện thoại'
-                    errorMessage={errors.name?.message}
+                    errorMessage={errors.phone?.message}
                     {...field}
                     onChange={field.onChange}
                   />
@@ -94,15 +110,21 @@ export default function Profile() {
                 register={register}
                 name='address'
                 placeholder='Địa chỉ'
-                errorMessage={errors.name?.message}
+                errorMessage={errors.address?.message}
               />
             </div>
           </div>
-          <DateSelect />
+          <Controller
+            control={control}
+            name='day_of_birth'
+            render={({ field }) => (
+              <DateSelect errorMessage={errors.day_of_birth?.message} onChange={field.onChange} value={field.value} />
+            )}
+          />
           <div className='mt-6 flex flex-col xl:flex-row'>
             <div className='w-full truncate pt-3 capitalize xl:w-[20%] xl:text-right' />
             <div className='flex w-full justify-between xl:w-[80%] xl:pl-5'>
-              <Button className='flex items-center justify-center rounded-sm bg-orange_main px-4 py-2 text-center text-sm text-white hover:bg-orange_main/80'>
+              <Button className='flex items-center justify-center rounded-sm bg-orange_main px-4 py-2 text-center text-sm text-white outline-none hover:bg-orange_main/80'>
                 Lưu
               </Button>
             </div>
@@ -113,7 +135,7 @@ export default function Profile() {
             <img
               alt='avatar'
               className='h-full w-full rounded-full object-cover'
-              src='https://i.imgur.com/7GIbjb1.png'
+              src={profile?.avatar || userDefaultSVG}
             />
           </div>
           <input className='hidden' type='file' accept='.jpg,.jpeg,.png' />

@@ -11,6 +11,7 @@ import { keyBy } from 'lodash'
 import { toast } from 'react-toastify'
 import { Link, useLocation } from 'react-router-dom'
 import path from 'src/constants/path'
+import noProductImg from 'src/assets/images/no-product.png'
 
 interface ExtendedPurchases extends Purchase {
   checked: boolean
@@ -291,11 +292,7 @@ export default function Cart() {
         ) : (
           <div className='text-center'>
             <div className='mx-auto flex h-[380px] w-[380px] flex-col items-center justify-center p-3'>
-              <img
-                src='	https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/12fe8880616de161.png'
-                alt='Không có sản phẩm'
-                className='h-24 w-24'
-              />
+              <img src={noProductImg} alt='Không có sản phẩm' className='h-24 w-24' />
               <span className='my-5 text-sm font-bold capitalize text-gray-500'>Giỏ hàng của bạn còn trống</span>
               <Link to={path.home} className='rounded-sm bg-orange_main px-10 py-3 text-white hover:opacity-90'>
                 Mua ngay

@@ -2,7 +2,7 @@ import type { User } from 'src/types/user.type'
 import type { SuccsessResponse } from 'src/types/utils.type'
 import http from 'src/utils/http'
 
-interface BodyUpdateProfile extends Omit<User, 'id' | 'role' | 'createdAt' | 'updatedAt' | 'email'> {
+interface BodyUpdateProfile extends Omit<User, '_id' | 'roles' | 'createdAt' | 'updatedAt' | 'email'> {
   password?: string
   newPassword?: string
 }

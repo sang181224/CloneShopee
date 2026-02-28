@@ -26,56 +26,60 @@ export default function DateSelect({ onChange, value, errorMessage }: Props) {
     }
   }
   return (
-    <div className='flex flex-col xl:flex-row'>
-      <div className='w-full truncate pt-3 capitalize xl:w-[20%] xl:text-right'>Năm sinh</div>
-      <div className='flex w-full justify-between xl:w-[80%] xl:pl-5'>
-        <select
-          value={value?.getDate() || date?.date}
-          name='date'
-          onChange={handleChange}
-          className='w-[32%] rounded-sm border border-gray-300 px-3 py-2 outline-none hover:cursor-pointer hover:border-orange_main focus:border-gray-500'
-        >
-          <option value='' selected disabled>
-            Ngày
-          </option>
-          {range(1, 32).map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-        <select
-          value={value?.getDate() || date?.month}
-          name='month'
-          onChange={handleChange}
-          className='w-[32%] rounded-sm border border-gray-300 px-3 py-2 outline-none hover:border-orange_main focus:border-gray-500'
-        >
-          <option value='' selected disabled>
-            Tháng
-          </option>
-          {range(0, 12).map((item) => (
-            <option key={item} value={item}>
-              {item + 1}
-            </option>
-          ))}
-        </select>
-        <select
-          value={value?.getDate() || date.year}
-          name='year'
-          onChange={handleChange}
-          className='w-[32%] rounded-sm border border-gray-300 px-3 py-2 outline-none hover:border-orange_main focus:border-gray-500'
-        >
-          <option value='' selected disabled>
-            Năm
-          </option>
-          {range(1990, new Date().getFullYear() + 1).map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
+    <div>
+      <div className='flex flex-col xl:flex-row'>
+        <div className='w-full truncate pt-3 capitalize xl:w-[20%] xl:text-right'>Năm sinh</div>
+        <div className='w-full xl:w-[80%] xl:pl-5'>
+          <div className='flex justify-between'>
+            <select
+              value={value?.getDate() || date?.date}
+              name='date'
+              onChange={handleChange}
+              className='w-[32%] rounded-sm border border-gray-300 px-3 py-2 outline-none hover:cursor-pointer hover:border-orange_main focus:border-gray-500'
+            >
+              <option value='' disabled>
+                Ngày
+              </option>
+              {range(1, 32).map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+            <select
+              value={value?.getMonth() || date?.month}
+              name='month'
+              onChange={handleChange}
+              className='w-[32%] rounded-sm border border-gray-300 px-3 py-2 outline-none hover:border-orange_main focus:border-gray-500'
+            >
+              <option value='' disabled>
+                Tháng
+              </option>
+              {range(0, 12).map((item) => (
+                <option key={item} value={item}>
+                  {item + 1}
+                </option>
+              ))}
+            </select>
+            <select
+              value={value?.getFullYear() || date.year}
+              name='year'
+              onChange={handleChange}
+              className='w-[32%] rounded-sm border border-gray-300 px-3 py-2 outline-none hover:border-orange_main focus:border-gray-500'
+            >
+              <option value='' disabled>
+                Năm
+              </option>
+              {range(1990, new Date().getFullYear() + 1).map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className='min-h-[1.5rem] text-sm text-red-600'>{errorMessage}</div>
+        </div>
       </div>
-      <div className='min-h-[1.5rem] text-sm text-red-600'>{errorMessage}</div>
     </div>
   )
 }

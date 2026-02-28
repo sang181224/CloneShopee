@@ -9,6 +9,7 @@ import { purchasesStatus } from 'src/constants/purchase'
 import { forrmatCurrency } from 'src/utils/utils'
 import NavHeader from '../NavHeader'
 import useSearchProducts from 'src/hooks/useSearchProducts'
+import noProductImg from 'src/assets/images/no-product.png'
 
 const MAX_PURCHASE_IN_CART = 5
 export default function Header() {
@@ -95,11 +96,7 @@ export default function Header() {
                   </div>
                 ) : (
                   <div className='flex h-[300px] w-[350px] flex-col items-center justify-center p-3'>
-                    <img
-                      src='	https://deo.shopeemobile.com/shopee/shopee-pcmall-live-sg/assets/12fe8880616de161.png'
-                      alt='Không có sản phẩm'
-                      className='h-24 w-24'
-                    />
+                    <img src={noProductImg} alt='Không có sản phẩm' className='h-24 w-24' />
                     <span className='text-md capitalize text-gray-500'>Chưa có sản phẩm</span>
                   </div>
                 )}
